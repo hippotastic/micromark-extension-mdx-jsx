@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - 'main'
-    pull_request:
-      paths-ignore:
-        - '.vscode/**'
 
 # Automatically cancel in-progress actions on the same branch
 concurrency:
@@ -20,8 +17,6 @@ defaults:
 jobs:
   changelog:
     name: Changelog PR or Release
-    if: ${{ github.ref_name == 'main' }}
-    needs: [lint, smoke]
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
