@@ -96,6 +96,7 @@ export function factoryTag(
   tagAttributeValueExpressionMarkerType,
   tagAttributeValueExpressionValueType
 ) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
   const self = this
   /** @type {State} */
   let returnState
@@ -845,6 +846,7 @@ export function factoryTag(
 
 /** @type {Tokenizer} */
 function tokenizeLazyLineEnd(effects, ok, nok) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
   const self = this
 
   return start
