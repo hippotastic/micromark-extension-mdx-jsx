@@ -469,15 +469,15 @@ test('micromark-extension-mdx-jsx', (t) => {
       () => {
         micromark('a <a:b .> c.', {extensions: [syntax()]})
       },
-      /Unexpected character `\.` \(U\+002E\) after local name, expected a character that can start an attribute name, such as a letter, `\$`, or `_`; whitespace before attributes; or the end of the tag/,
+      /Unexpected character `\.` \(U\+002E\) after local name, expected a character that can start an attribute name, such as a letter, `:`, `@`, `\$`, or `_`; whitespace before attributes; or the end of the tag/,
       'should crash on a nonconforming character after a local name'
     )
 
     t.throws(
       () => {
-        micromark('a <a.b :> c.', {extensions: [syntax()]})
+        micromark('a <a.b &> c.', {extensions: [syntax()]})
       },
-      /Unexpected character `:` \(U\+003A\) after member name, expected a character that can start an attribute name, such as a letter, `\$`, or `_`; whitespace before attributes; or the end of the tag/,
+      /Unexpected character `&` \(U\+0026\) after member name, expected a character that can start an attribute name, such as a letter, `:`, `@`, `\$`, or `_`; whitespace before attributes; or the end of the tag/,
       'should crash on a nonconforming character after a member name'
     )
 
@@ -485,7 +485,7 @@ test('micromark-extension-mdx-jsx', (t) => {
       () => {
         micromark('a <a => c.', {extensions: [syntax()]})
       },
-      /Unexpected character `=` \(U\+003D\) after name, expected a character that can start an attribute name, such as a letter, `\$`, or `_`; whitespace before attributes; or the end of the tag/,
+      /Unexpected character `=` \(U\+003D\) after name, expected a character that can start an attribute name, such as a letter, `:`, `@`, `\$`, or `_`; whitespace before attributes; or the end of the tag/,
       'should crash on a nonconforming character after name'
     )
 
@@ -574,7 +574,7 @@ test('micromark-extension-mdx-jsx', (t) => {
       () => {
         micromark('a <b {...p}~>c</b>.', {extensions: [syntax()]})
       },
-      /Unexpected character `~` \(U\+007E\) before attribute name, expected a character that can start an attribute name, such as a letter, `\$`, or `_`; whitespace before attributes; or the end of the tag/,
+      /Unexpected character `~` \(U\+007E\) before attribute name, expected a character that can start an attribute name, such as a letter, `:`, `@`, `\$`, or `_`; whitespace before attributes; or the end of the tag/,
       'should crash on a nonconforming character before an attribute name'
     )
 
@@ -590,7 +590,7 @@ test('micromark-extension-mdx-jsx', (t) => {
       () => {
         micromark('a <a b@> c.', {extensions: [syntax()]})
       },
-      /Unexpected character `@` \(U\+0040\) in attribute name, expected an attribute name character such as letters, digits, `\$`, or `_`; `=` to initialize a value; whitespace before attributes; or the end of the tag/,
+      /Unexpected character `@` \(U\+0040\) in attribute name, expected an attribute name character such as letters, digits, `.`, `\$`, or `_`; `=` to initialize a value; whitespace before attributes; or the end of the tag/,
       'should crash on a nonconforming character in attribute name'
     )
 
@@ -616,7 +616,7 @@ test('micromark-extension-mdx-jsx', (t) => {
       () => {
         micromark('a <a b 1> c.', {extensions: [syntax()]})
       },
-      /Unexpected character `1` \(U\+0031\) after attribute name, expected a character that can start an attribute name, such as a letter, `\$`, or `_`; `=` to initialize a value; or the end of the tag/,
+      /Unexpected character `1` \(U\+0031\) after attribute name, expected a character that can start an attribute name, such as a letter, `:`, `@`, `\$`, or `_`; `=` to initialize a value; or the end of the tag/,
       'should crash on a nonconforming character after an attribute name'
     )
 
@@ -632,7 +632,7 @@ test('micromark-extension-mdx-jsx', (t) => {
       () => {
         micromark('a <a b:c%> c.', {extensions: [syntax()]})
       },
-      /Unexpected character `%` \(U\+0025\) in local attribute name, expected an attribute name character such as letters, digits, `\$`, or `_`; `=` to initialize a value; whitespace before attributes; or the end of the tag/,
+      /Unexpected character `%` \(U\+0025\) in local attribute name, expected an attribute name character such as letters, digits, `.`, `\$`, or `_`; `=` to initialize a value; whitespace before attributes; or the end of the tag/,
       'should crash on a nonconforming character in a local attribute name'
     )
 
@@ -640,7 +640,7 @@ test('micromark-extension-mdx-jsx', (t) => {
       () => {
         micromark('a <a b:c ^> c.', {extensions: [syntax()]})
       },
-      /Unexpected character `\^` \(U\+005E\) after local attribute name, expected a character that can start an attribute name, such as a letter, `\$`, or `_`; `=` to initialize a value; or the end of the tag/,
+      /Unexpected character `\^` \(U\+005E\) after local attribute name, expected a character that can start an attribute name, such as a letter, `:`, `@`, `\$`, or `_`; `=` to initialize a value; or the end of the tag/,
       'should crash on a nonconforming character after a local attribute name'
     )
 
@@ -706,7 +706,7 @@ test('micromark-extension-mdx-jsx', (t) => {
       () => {
         micromark('a <a b=""*> c.', {extensions: [syntax()]})
       },
-      /Unexpected character `\*` \(U\+002A\) before attribute name, expected a character that can start an attribute name, such as a letter, `\$`, or `_`; whitespace before attributes; or the end of the tag/,
+      /Unexpected character `\*` \(U\+002A\) before attribute name, expected a character that can start an attribute name, such as a letter, `:`, `@`, `\$`, or `_`; whitespace before attributes; or the end of the tag/,
       'should crash on a nonconforming character after an attribute value'
     )
 
@@ -1088,6 +1088,109 @@ test('micromark-extension-mdx-jsx', (t) => {
       }),
       '<blockquote>\n<p>a</p>\n</blockquote>\n',
       'should not support lazy flow (3)'
+    )
+
+    t.end()
+  })
+
+  t.test('AlpineJS syntax extensions', (t) => {
+    t.equal(
+      micromark(`a <div :class="open ? '' : 'hidden'"></div> c`, {
+        extensions: [syntax()],
+        htmlExtensions: [html]
+      }),
+      '<p>a  c</p>',
+      'should support attribute names starting with `:` after element names'
+    )
+
+    t.equal(
+      micromark(`a <div.test :class="open ? '' : 'hidden'"></div.test> c`, {
+        extensions: [syntax()],
+        htmlExtensions: [html]
+      }),
+      '<p>a  c</p>',
+      'should support attribute names starting with `:` after local element names'
+    )
+
+    t.equal(
+      micromark(`a <input type="text" disabled :placeholder="placeholder"> c`, {
+        extensions: [syntax()],
+        htmlExtensions: [html]
+      }),
+      '<p>a  c</p>',
+      'should support attribute names starting with `:` after attribute names'
+    )
+
+    t.equal(
+      micromark(`a <input type="text" x-test:disabled :placeholder="placeholder"> c`, {
+        extensions: [syntax()],
+        htmlExtensions: [html]
+      }),
+      '<p>a  c</p>',
+      'should support attribute names starting with `:` after local attribute names'
+    )
+
+    t.equal(
+      micromark('a <input type="text" :placeholder="placeholder"> c', {
+        extensions: [syntax()],
+        htmlExtensions: [html]
+      }),
+      '<p>a  c</p>',
+      'should support attribute names starting with `:` after attribute values'
+    )
+
+    t.equal(
+      micromark(`a <button @click="handleClick">Test</button> c`, {
+        extensions: [syntax()],
+        htmlExtensions: [html]
+      }),
+      '<p>a Test c</p>',
+      'should support attribute names starting with `@` after element names'
+    )
+
+    t.equal(
+      micromark(`a <button.local @click="handleClick">Test</button.local> c`, {
+        extensions: [syntax()],
+        htmlExtensions: [html]
+      }),
+      '<p>a Test c</p>',
+      'should support attribute names starting with `@` after local element names'
+    )
+
+    t.equal(
+      micromark(`a <button disabled @click="handleClick">Test</button> c`, {
+        extensions: [syntax()],
+        htmlExtensions: [html]
+      }),
+      '<p>a Test c</p>',
+      'should support attribute names starting with `@` after attribute names'
+    )
+
+    t.equal(
+      micromark(`a <button x-test:disabled @click="handleClick">Test</button> c`, {
+        extensions: [syntax()],
+        htmlExtensions: [html]
+      }),
+      '<p>a Test c</p>',
+      'should support attribute names starting with `@` after local attribute names'
+    )
+
+    t.equal(
+      micromark('a <button type="submit" @click="handleClick">Test</button> c', {
+        extensions: [syntax()],
+        htmlExtensions: [html]
+      }),
+      '<p>a Test c</p>',
+      'should support attribute names starting with `@` after attribute values'
+    )
+
+    t.equal(
+      micromark('a <input x-on:input.debounce.500ms="fetchResults"> c', {
+        extensions: [syntax()],
+        htmlExtensions: [html]
+      }),
+      '<p>a  c</p>',
+      'should support attribute names containing dots'
     )
 
     t.end()

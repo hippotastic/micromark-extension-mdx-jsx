@@ -15,6 +15,7 @@ export default {
         argsIgnorePattern: '^(_.*?|e)$',
       },
     ],
+    '@typescript-eslint/no-this-alias': 'off',
     semi: ['warn', 'never'],
     quotes: ['warn', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
     'nonblock-statement-body-position': ['warn', 'below'],
