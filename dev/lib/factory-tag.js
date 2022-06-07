@@ -238,7 +238,7 @@ export function factoryTag(
     }
 
     // Start of a local name.
-    if (code === codes.colon) {
+    if (code === codes.colon && !isAfterWhitespace()) {
       effects.enter(tagNamePrefixMarkerType)
       effects.consume(code)
       effects.exit(tagNamePrefixMarkerType)
@@ -251,7 +251,7 @@ export function factoryTag(
       code === codes.slash ||
       code === codes.greaterThan ||
       code === codes.leftCurlyBrace ||
-      (code !== codes.eof && idStart(code))
+      (code !== codes.eof && idStartAttr(code))
     ) {
       effects.exit(tagNameType)
       return beforeAttribute(code)
@@ -260,7 +260,7 @@ export function factoryTag(
     crash(
       code,
       'after name',
-      'a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag'
+      'a character that can start an attribute name, such as a letter, `:`, `@`, `$`, or `_`; whitespace before attributes; or the end of the tag'
     )
   }
 
@@ -332,7 +332,7 @@ export function factoryTag(
       code === codes.slash ||
       code === codes.greaterThan ||
       code === codes.leftCurlyBrace ||
-      (code !== codes.eof && idStart(code))
+      (code !== codes.eof && idStartAttr(code))
     ) {
       effects.exit(tagNameType)
       return beforeAttribute(code)
@@ -341,7 +341,7 @@ export function factoryTag(
     crash(
       code,
       'after member name',
-      'a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag'
+      'a character that can start an attribute name, such as a letter, `:`, `@`, `$`, or `_`; whitespace before attributes; or the end of the tag'
     )
   }
 
@@ -406,7 +406,7 @@ export function factoryTag(
       code === codes.slash ||
       code === codes.greaterThan ||
       code === codes.leftCurlyBrace ||
-      (code !== codes.eof && idStart(code))
+      (code !== codes.eof && idStartAttr(code))
     ) {
       effects.exit(tagNameType)
       return beforeAttribute(code)
@@ -415,7 +415,7 @@ export function factoryTag(
     crash(
       code,
       'after local name',
-      'a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag'
+      'a character that can start an attribute name, such as a letter, `:`, `@`, `$`, or `_`; whitespace before attributes; or the end of the tag'
     )
   }
 
@@ -456,7 +456,7 @@ export function factoryTag(
     }
 
     // Start of an attribute name.
-    if (code !== codes.eof && idStart(code)) {
+    if (code !== codes.eof && idStartAttr(code)) {
       effects.enter(tagAttributeType)
       effects.enter(tagAttributeNameType)
       effects.enter(tagAttributeNamePrimaryType)
@@ -467,7 +467,7 @@ export function factoryTag(
     crash(
       code,
       'before attribute name',
-      'a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag'
+      'a character that can start an attribute name, such as a letter, `:`, `@`, `$`, or `_`; whitespace before attributes; or the end of the tag'
     )
   }
 
@@ -482,7 +482,7 @@ export function factoryTag(
   /** @type {State} */
   function attributePrimaryName(code) {
     // Continuation of the attribute name.
-    if (code === codes.dash || (code !== codes.eof && idCont(code))) {
+    if (code === codes.dash || (code !== codes.eof && idContAttr(code))) {
       effects.consume(code)
       return attributePrimaryName
     }
@@ -505,7 +505,7 @@ export function factoryTag(
     crash(
       code,
       'in attribute name',
-      'an attribute name character such as letters, digits, `$`, or `_`; `=` to initialize a value; whitespace before attributes; or the end of the tag'
+      'an attribute name character such as letters, digits, `.`, `$`, or `_`; `=` to initialize a value; whitespace before attributes; or the end of the tag'
     )
   }
 
@@ -513,7 +513,7 @@ export function factoryTag(
   /** @type {State} */
   function afterAttributePrimaryName(code) {
     // Start of a local name.
-    if (code === codes.colon) {
+    if (code === codes.colon && !isAfterWhitespace()) {
       effects.enter(tagAttributeNamePrefixMarkerType)
       effects.consume(code)
       effects.exit(tagAttributeNamePrefixMarkerType)
@@ -538,7 +538,7 @@ export function factoryTag(
       code === codes.leftCurlyBrace ||
       markdownLineEndingOrSpace(code) ||
       unicodeWhitespace(code) ||
-      (code !== codes.eof && idStart(code))
+      (code !== codes.eof && idStartAttr(code))
     ) {
       effects.exit(tagAttributeNameType)
       effects.exit(tagAttributeType)
@@ -549,7 +549,7 @@ export function factoryTag(
     crash(
       code,
       'after attribute name',
-      'a character that can start an attribute name, such as a letter, `$`, or `_`; `=` to initialize a value; or the end of the tag'
+      'a character that can start an attribute name, such as a letter, `:`, `@`, `$`, or `_`; `=` to initialize a value; or the end of the tag'
     )
   }
 
@@ -574,7 +574,7 @@ export function factoryTag(
   /** @type {State} */
   function attributeLocalName(code) {
     // Continuation of the local attribute name.
-    if (code === codes.dash || (code !== codes.eof && idCont(code))) {
+    if (code === codes.dash || (code !== codes.eof && idContAttr(code))) {
       effects.consume(code)
       return attributeLocalName
     }
@@ -597,7 +597,7 @@ export function factoryTag(
     crash(
       code,
       'in local attribute name',
-      'an attribute name character such as letters, digits, `$`, or `_`; `=` to initialize a value; whitespace before attributes; or the end of the tag'
+      'an attribute name character such as letters, digits, `.`, `$`, or `_`; `=` to initialize a value; whitespace before attributes; or the end of the tag'
     )
   }
 
@@ -618,7 +618,7 @@ export function factoryTag(
       code === codes.slash ||
       code === codes.greaterThan ||
       code === codes.leftCurlyBrace ||
-      (code !== codes.eof && idStart(code))
+      (code !== codes.eof && idStartAttr(code))
     ) {
       effects.exit(tagAttributeType)
       return beforeAttribute(code)
@@ -627,7 +627,7 @@ export function factoryTag(
     crash(
       code,
       'after local attribute name',
-      'a character that can start an attribute name, such as a letter, `$`, or `_`; `=` to initialize a value; or the end of the tag'
+      'a character that can start an attribute name, such as a letter, `:`, `@`, `$`, or `_`; `=` to initialize a value; or the end of the tag'
     )
   }
 
@@ -805,6 +805,31 @@ export function factoryTag(
 
     effects.consume(code)
     return optionalEsWhitespaceContinue
+  }
+
+  function isAfterWhitespace() {
+    return markdownLineEndingOrSpace(self.previous) || unicodeWhitespace(self.previous)
+  }
+
+  /**
+   * Extends `idStart` by allowing `:` and `@` after whitespace
+   * to start attribute IDs.
+   *
+   * @param {number} code
+   */
+  function idStartAttr(code) {
+    return ((code === codes.colon || code === codes.atSign) && isAfterWhitespace()) ||
+      idStart(code)
+  }
+
+  /**
+   * Extends `idCont` by allowing `.` inside attribute IDs.
+   *
+   * @param {number} code
+   */
+  function idContAttr(code) {
+    return (code === codes.dot) ||
+      idCont(code)
   }
 
   /** @type {State} */

@@ -1,7 +1,7 @@
 {
-  "name": "micromark-extension-mdx-jsx",
+  "name": "@astrojs/micromark-extension-mdx-jsx",
   "version": "1.0.3",
-  "description": "micromark extension to support MDX or MDX.js JSX",
+  "description": "Less strict version of micromark-extension-mdx-jsx.",
   "license": "MIT",
   "keywords": [
     "micromark",
@@ -16,13 +16,12 @@
     "markdown",
     "unified"
   ],
-  "repository": "micromark/micromark-extension-mdx-jsx",
-  "bugs": "https://github.com/micromark/micromark-extension-mdx-jsx/issues",
-  "funding": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/unified"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/withastro/micromark-extension-mdx-jsx.git"
   },
-  "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+  "homepage": "https://astro.build",
+  "author": "withastro",
   "contributors": [
     "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
   ],
@@ -52,11 +51,15 @@
     "vfile-message": "^3.0.0"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.22.0",
     "@types/mdast": "^3.0.0",
     "@types/tape": "^4.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
     "acorn": "^8.0.0",
     "acorn-jsx": "^5.0.0",
     "c8": "^7.0.0",
+    "eslint": "^8.17.0",
     "mdast-zone": "^5.0.0",
     "micromark": "^3.0.0",
     "micromark-build": "^1.0.0",
@@ -66,15 +69,14 @@
     "rimraf": "^3.0.0",
     "tape": "^5.0.0",
     "type-coverage": "^2.0.0",
-    "typescript": "^4.0.0",
-    "xo": "^0.47.0"
+    "typescript": "^4.0.0"
   },
   "scripts": {
-    "build": "rimraf \"dev/**/*.d.ts\" \"script/**/*.d.ts\" \"test/**/*.d.ts\" && tsc && type-coverage && micromark-build",
-    "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
+    "build": "rimraf \"dev/**/*.d.ts\" \"script/**/*.d.ts\" \"test/**/*.d.ts\" && tsc && type-coverage && micromark-build && npm run format",
+    "format": "prettier ./index.{js,d.ts} ./lib -w --loglevel warn",
     "test-api": "node --conditions development test/index.js",
     "test-coverage": "c8 --check-coverage --branches 100 --functions 100 --lines 100 --statements 100 --reporter lcov node --conditions development test/index.js",
-    "test": "npm run build && npm run format && npm run test-coverage"
+    "test": "npm run build && npm run test-coverage"
   },
   "prettier": {
     "tabWidth": 2,
@@ -83,14 +85,6 @@
     "bracketSpacing": false,
     "semi": false,
     "trailingComma": "none"
-  },
-  "xo": {
-    "prettier": true,
-    "rules": {
-      "node/file-extension-in-import": "off",
-      "unicorn/no-this-assignment": "off",
-      "unicorn/prefer-code-point": "off"
-    }
   },
   "remarkConfig": {
     "plugins": [
