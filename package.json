@@ -71,6 +71,7 @@
     "type-coverage": "^2.0.0",
     "typescript": "^4.0.0"
   },
+  "packageManager": "pnpm@7.0.1",
   "scripts": {
     "build": "rimraf \"dev/**/*.d.ts\" \"script/**/*.d.ts\" \"test/**/*.d.ts\" && tsc && type-coverage && micromark-build && npm run format",
     "format": "prettier ./index.{js,d.ts} ./lib -w --loglevel warn",
